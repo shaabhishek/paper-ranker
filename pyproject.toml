@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "personalized-conference-paper-explorer"
+version = "0.1.0"
+description = "A single-user web app to rank conference papers by semantic similarity to your own seed papers, with cached summaries, basic filters, and fortnightly re-ranking."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3",
+    "click",
+    "fastapi",
+    "openai",
+    "pinecone",
+    "psycopg2-binary",
+    "pydantic-settings",
+    "pymupdf",
+    "sentry-sdk",
+    "sqlalchemy",
+    "tqdm",
+    "uvicorn[standard]",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "httpx",  # For FastAPI testing
+    "ruff",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+include = ["api*", "utils*", "tasks*"]
+exclude = ["frontend*", "tests*"]
+
+## Ruff formatting / linting settings
+[tool.ruff]
+
+# Assume Python 3.12 is the target version
+target-version = "py312"
+
+# Same as Black.
+line-length = 80
+indent-width = 2
+
+[tool.ruff.format]
+# Prefer single quotes over double quotes.
+quote-style = "single"
+
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["D", "D417", "E", "F"]
+
+# D104: Missing docstring in public package
+ignore = ["D104"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"  # Accepts: "google", "numpy", or "pep257".
+
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "single"
+
+[tool.ruff.lint.flake8-import-conventions.aliases]
+# Declare the default aliases.
+altair = "alt"
+"matplotlib.pyplot" = "plt"
+numpy = "np"
+pandas = "pd"
+seaborn = "sns"
+scipy = "sp"
+stable_baselines3 = "sb3"
+
+[tool.ruff.lint.isort]
+# Sort imports
+from-first = true
+force-single-line = true
+force-sort-within-sections = true
